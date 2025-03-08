@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Инструкции и видео</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">IMPERIUM.Broker</div>
+    <nav class="nav">
+      <a href="../index.html">Домой</a>
+      <a href="../trade/index.html">Публичный трейдинг</a>
+      <a href="#">Пассивный заработок</a>
+      <a href="../callback/index.html">Обратная связь</a>
+    </nav>
+    <a href="../registor/index.html"><button class="ben2">Вход</button></a>
+    <div class="burger-menu">
+      <div class="burger-icon" onclick="toggleMenu()">&#9776;</div>
+      <div class="burger-links">
+        <a href="../index.html">Домой</a>
+        <a href="../trade/index.html">Публичный трейдинг</a>
+        <a href="#">Пассивный заработок</a>
+        <a href="#">Доходы и безопасность</a>
+        <a href="../callback/index.html">Обратная связь</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Слайд с инструкциями -->
+    <div class="slide">
+      <h1>Инструкции по подключению FUTURES счета</h1>
+      <p>Вашим депозитом будет управлять один из лучших трейдеров мира.</p>
+      <p>Пассивный заработок еще никогда не был таким простым.</p>
+      <p>Больше не нужно заводить Телеграм-канал.</p>
+      <p>Вам не нужно даже знать, что такое трейдинг и криптовалюта.</p>
+      <p>Вам остается только сфокусироваться на торговле.</p>
+    </div>
+
+    <!-- Контейнеры для видео с навигационными подписями -->
+    <div class="con3">
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Инструкция по быстрому подключению <br> FUTURES счета</p>
+      </div>
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Пассивный заработок еще никогда не <br> был таким простым </p>
+      </div>
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Вам не нужно даже знать, что такое <br> трейдинг и криптовалюта. </p>
+      </div>
+    </div>
+    <div class="con3">
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Вашим депозитом будет управлять один <br> из лучших трейдеров мира</p>
+      </div>
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Больше не нужно заводить Телеграм- <br>канал</p>
+      </div>
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1"></iframe>
+        </div>
+        <p class="video-caption">Вам остается только сфокусироваться на <br> торговле.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // script.js
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.display = i === index ? 'block' : 'none';
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    // Инициализация
+    showSlide(currentSlide);
+    setInterval(nextSlide, 5000); // Автопереключение каждые 5 секунд
+
+    // Функция для управления бургер-меню
+    function toggleMenu() {
+      const burgerLinks = document.querySelector('.burger-links');
+      burgerLinks.style.display = burgerLinks.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</body>
+</html>

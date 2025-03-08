@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperium Broker</title>
+    <link rel="stylesheet" href="./styke.css">
+    <style>
+       /* Основные стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0e0e11;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+/* Боковое меню */
+.sidebar {
+    width: 230px;
+    background: #1a1a23;
+    height: 100vh;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 15px;
+    text-align: left;
+    transition: background 0.3s;
+    border-radius: 8px;
+}
+
+.sidebar button:hover, .active {
+    background: #272736;
+}
+
+/* Контент */
+.container {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+select, button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.trader-list, .statistics, .help, .replenishment {
+    display: none;
+}
+
+.active-tab {
+    display: block;
+}
+
+/* Карточки трейдеров */
+.trader {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #1a1a23;
+    border-radius: 8px;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+}
+
+.trader:hover {
+    background: #272736;
+}
+
+.trader-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.trader img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+/* Светлая тема */
+.light-theme {
+    background-color: white;
+    color: black;
+}
+
+.light-theme .sidebar {
+    background: #f3f3f3;
+}
+
+.light-theme .trader {
+    background: #f3f3f3;
+}
+
+.light-theme .trader:hover {
+    background: #dddddd;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+    }
+    .sidebar button {
+        font-size: 18px;
+        padding: 10px;
+    }
+    .container {
+        padding: 15px;
+    }
+    .trader {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+/* Ползунок */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin: 0px 0px 0px 450px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-container {
+    display: flex;
+    gap: 20px;
+}
+
+.action-box {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.action-title {
+    margin-bottom: 20px;
+}
+
+.input-field {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.action-button {
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.deposit-button {
+    background-color: #007bff;
+}
+
+.withdraw-button {
+    background-color: #4CAF50; /* Зеленый цвет для вывода */
+}
+
+.action-button:hover {
+    opacity: 0.8;
+}
+
+/* Видео контейнеры */
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.video-box {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+.video-box iframe {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+    </style>
+</head>
+<body>
+
+        <!-- Боковое меню -->
+        <div class="sidebar">
+            <button class="menu-item active" onclick="showTab('trader-list', this)">📈 Трейдеры</button>
+            <button class="menu-item" onclick="showTab('statistics', this)">📊 Статистика</button>
+            <button class="menu-item" onclick="showTab('help', this)">❓ Помощь</button>
+            <button class="menu-item" onclick="showTab('replenishment', this)">💰 Пополнение</button>
+        </div>
+    
+        <!-- Основной контент -->
+        <div class="container">
+            <header class="header">
+                <div class="logo">IMPERIUM.Broker</div>
+                <nav class="nav">
+                    <a href="../index.html">Домой</a>
+                    <a href="../trade/index.html">Публичный трейдинг</a>
+                    <a href="../video/index.html">Инструкция</a>
+                    <a href="../callback/index.html">Обратная связь</a>
+                </nav>
+                <a href="../registor/index.html"><button class="ben2">Вход</button></a>
+                <div class="burger-menu">
+                    <div class="burger-icon" onclick="toggleMenu()">&#9776;</div>
+                    <div class="burger-links">
+                        <a href="../index.html">Домой</a>
+                        <a href="../trade/index.html">Публичный трейдинг</a>
+                        <a href="../video/index.html">Инструкция</a>
+                        <a href="../callback/index.html">Обратная связь</a>
+                    </div>
+                </div>
+            </header>
+    
+            <div class="header">
+                <h1>Imperium Broker</h1>
+                <select id="sortSelector">
+                    <option value="price">По цене</option>
+                    <option value="profit">По доходности</option>
+                    <option value="popularity">По популярности</option>
+                </select>
+                <button onclick="toggleTheme()">Переключить тему</button>
+            </div>
+    
+            <!-- Вкладка "Трейдеры" -->
+            <div id="trader-list" class="trader-list active-tab">
+                <div id="traderList"></div>
+            </div>
+    
+            <!-- Вкладка "Статистика" -->
+            <div id="statistics" class="statistics">
+                <h2>📊 Статистика</h2>
+                <div>
+                    <img src="./img/Chart.png" alt="#">
+                </div>
+            </div>
+    
+            <!-- Вкладка "Помощь" -->
+            <div id="help" class="help">
+                <h2>❓ Помощь</h2>
+                <div class="container2">
+                    <div class="form-container">
+                      <h2>Обратная связь</h2>
+                      <p>Если у вас остались вопросы, напишите нам, и наши менеджеры свяжутся с вами как можно быстрее.</p>
+                      <form id="feedback-form">
+                        <div class="input-row">
+                          <input type="text" id="name" placeholder="Ваше имя" required>
+                          <input type="email" id="email" placeholder="Ваш email" required>
+                        </div>
+                        <textarea id="message" placeholder="Сообщение" required></textarea>
+                        <div>
+                          <button class="request-btn" onclick="showNotification()">Отправить запрос.</button>
+                          <div class="notification" id="notification"> Ваш запрос принят ✅ <br> Вам ответят в ближайшее <br> время.</div>
+                      </div>          </form>
+                    </div>
+                  </div>
+            </div>
+
+            <!-- Вкладка "Пополнение" -->
+            <div id="replenishment" class="replenishment">
+                <h2>💰 Пополнение</h2>
+                <div class="page-container">
+                    <div class="action-container">
+                        <div class="action-box deposit">
+                            <h2 class="action-title">Пополнить баланс</h2>
+                            <input type="text" class="input-field" placeholder="Сумма">
+                            <button class="action-button deposit-button">Пополнить <br>баланс</button>
+                        </div>
+                        <div class="action-box withdraw">
+                            <h2 class="action-title">Вывести <br> баланс</h2>
+                            <input type="text" class="input-field" placeholder="Сумма">
+                            <button class="action-button withdraw-button">Вывести баланс</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            const traders = [
+                { name: "Толян", profit: 8, risk: "Низкий", subscribers: 800, price: 150, image: "https://i.pravatar.cc/50?img=1" },
+                { name: "Jun", profit: 41, risk: "Высокий", subscribers: 2589, price: 247, image: "https://i.pravatar.cc/50?img=2" },
+                { name: "Федр", profit: 18, risk: "Средний", subscribers: 124589, price: 15478, image: "https://i.pravatar.cc/50?img=3" },
+                { name: "Миша", profit: 32, risk: "Низкий", subscribers: 148, price: 800, image: "https://i.pravatar.cc/50?img=4" },
+                { name: "Елена", profit: 28, risk: "Низкий", subscribers: 257931, price: 1400, image: "https://i.pravatar.cc/50?img=5" },
+                { name: "Саша", profit: 35, risk: "Средний", subscribers: 259, price: 215, image: "https://i.pravatar.cc/50?img=6" }
+            ];
+    
+            function renderTraders(sortedTraders) {
+                const list = document.getElementById("traderList");
+                list.innerHTML = "";
+                sortedTraders.forEach(trader => {
+                    list.innerHTML += `
+                        <div class="trader">
+                            <div class="trader-info">
+                                <img src="${trader.image}" alt="${trader.name}">
+                                <span>${trader.name}</span>
+                            </div>
+                            <span>${trader.profit}%</span>
+                            <span>${trader.risk}</span>
+                            <span>${trader.subscribers} подписчиков</span>
+                            <span>$${trader.price}</span>
+                        </div>
+                    `;
+                });
+            }
+    
+            function sortTraders(type) {
+                let sorted;
+                if (type === "price") {
+                    sorted = traders.slice().sort((a, b) => a.price - b.price);
+                } else if (type === "profit") {
+                    sorted = traders.slice().sort((a, b) => b.profit - a.profit);
+                } else if (type === "popularity") {
+                    sorted = traders.slice().sort((a, b) => b.subscribers - a.subscribers);
+                }
+                renderTraders(sorted);
+            }
+    
+            function toggleTheme() {
+                document.body.classList.toggle("light-theme");
+            }
+    
+            function showTab(tabId, element) {
+                document.querySelectorAll(".menu-item").forEach(btn => btn.classList.remove("active"));
+                element.classList.add("active");
+                document.querySelectorAll(".container > div").forEach(div => div.classList.remove("active-tab"));
+                document.getElementById(tabId).classList.add("active-tab");
+            }
+    
+            document.getElementById("sortSelector").addEventListener("change", function() {
+                sortTraders(this.value);
+            });
+    
+            renderTraders(traders);
+    
+            // Функция для всплывающего уведомления
+            function showNotification() {
+                let notification = document.getElementById("notification");
+                notification.classList.add("show");
+    
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 3000); // Исчезает через 3 секунды
+            }
+    
+            // Функция для управления бургер-меню
+            function toggleMenu() {
+                const burgerLinks = document.querySelector('.burger-links');
+                burgerLinks.style.display = burgerLinks.style.display === 'flex' ? 'none' : 'flex';
+            }
+    
+            // Функция для переключения темы
+            document.getElementById("themeToggle").addEventListener("change", function() {
+                document.body.classList.toggle("light-theme");
+            });
+    
+            document.getElementById("menu-btn").addEventListener("click", function () {
+                let menu = document.getElementById("menu");
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+    
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    this.closest(".channel-card").remove();
+                });
+            });
+    
+            document.getElementById("menu-btn").addEventListener("click", function () {
+                let menu = document.getElementById("menu");
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+    
+            // Логика переключения разделов
+            const menuItems = document.querySelectorAll(".menu-item");
+            const sections = document.querySelectorAll(".section");
+    
+            menuItems.forEach(item => {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    
+                    // Удаляем активный класс у всех
+                    menuItems.forEach(link => link.classList.remove("active"));
+                    sections.forEach(section => section.classList.remove("active"));
+    
+                    // Добавляем активный класс к текущему
+                    this.classList.add("active");
+                    document.getElementById(this.dataset.section).classList.add("active");
+                });
+            });
+        </script>
+    
+    
+</body>
+</html>

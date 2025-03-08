@@ -1,0 +1,187 @@
+/* Основные стили */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0e0e11;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* Заголовок */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  bottom: -5px;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.nav a:hover {
+  transform: translateX(10px);
+}
+
+.ben2 {
+  padding: 10px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(45deg, #2C90F7, #05C0CC);
+  color: white;
+  border-radius: 15px;
+}
+
+/* Бургер-меню */
+.burger-menu {
+  display: none;
+}
+
+.burger-icon {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.burger-links {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.burger-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.burger-links a:hover {
+  transform: translateX(10px);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+  .header {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .nav {
+      display: none;
+  }
+
+  .burger-menu {
+      display: block;
+  }
+
+  .burger-links {
+      display: flex;
+  }
+}
+
+  .container {
+    background: #ffffff00;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+}
+
+  .slide {
+    margin-bottom: 40px;
+  }
+  
+  .slide h1 {
+    color: #ffffff;
+    font-size: 24px;
+  }
+  
+  .slide p {
+    color: #ffffff;
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .video-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .video-item {
+    background: #f0f0f000;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 20px; /* Отступ для подписи */
+    width: 100%;
+    margin: 20px 20px 20px 20px;
+  }  
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Соотношение 16:9 для видео */
+    height: 0;
+    overflow: hidden;
+  }
+  
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px 10px 0 0; /* Закругление только сверху */
+  }
+  
+  .video-caption {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    padding: 0 10px; /* Отступы по бокам */
+  }
+
+  .con3 {
+    display: flex;
+    
+  }
+
+  
